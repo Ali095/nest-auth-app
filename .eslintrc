@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "env": {
+      "browser": true,
+      "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+      "project": "./tsconfig.json"
+  },
+  "plugins": [
+      "@typescript-eslint",
+      "import"
+  ],
+
+  "extends": [
+      "eslint:recommended",
+      "airbnb-base",
+      "airbnb-typescript/base",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:eslint-comments/recommended"
+  ],
+  "rules": {
+      "indent": "off",
+      "@typescript-eslint/indent": ["error", 4, { "SwitchCase": 1 }],
+      "class-methods-use-this":"off",
+      "linebreak-style": "off",
+      "semi": ["error", "always"],
+      "quotes": "off",
+      "@typescript-eslint/quotes": ["error", "double"],
+      "camelcase": "off",
+      "@typescript-eslint/naming-convention": ["error", {
+        "selector": "default",
+        "format": [ "camelCase", "PascalCase", "UPPER_CASE"]
+      }]
+  }
+}
