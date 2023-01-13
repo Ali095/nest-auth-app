@@ -9,8 +9,7 @@
       "project": "./tsconfig.json"
   },
   "plugins": [
-      "@typescript-eslint",
-      "import"
+      "@typescript-eslint"
   ],
 
   "extends": [

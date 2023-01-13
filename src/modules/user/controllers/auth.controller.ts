@@ -1,21 +1,11 @@
 import {
-    Body,
-    Controller,
-    Get,
-    HttpStatus,
-    Post,
-    Req,
-    Res,
-    UseGuards,
+    Body, Controller, HttpStatus, Post, Res,
 } from "@nestjs/common";
 import AuthService from "../services/auth.service";
-import AuthenticateDto from "../dto/authenticate.dto";
-import JwtAuthGuard from "../jwt-auth.guard";
-import RoleGuard from "../role.guard";
-import Roles from "../roles.decorator";
+import { AuthenticateDto } from "../dto";
 
 @Controller("user/auth")
-export default class AuthController {
+class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post("login")
@@ -27,11 +17,7 @@ export default class AuthController {
             return res.status(error.status).json(error.response);
         }
     }
-
-    @Roles("admin")
-    @UseGuards(JwtAuthGuard, RoleGuard)
-    @Get("profile")
-    profile(@Req() req, @Res() res) {
-        return res.status(HttpStatus.OK).json(req.user);
-    }
 }
+
+export default AuthController;
+export { AuthController };

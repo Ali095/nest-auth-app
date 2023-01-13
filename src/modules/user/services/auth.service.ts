@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { sign } from "jsonwebtoken";
-import AuthenticateDto from "../dto/authenticate.dto";
-import { IAuthenticate, Role } from "../interfaces/user.interface";
+import { AuthenticateDto } from "../dto";
+import { IAuthenticate } from "../interfaces/user.interface";
 
 @Injectable()
 export default class AuthService {
@@ -10,13 +10,11 @@ export default class AuthService {
             id: "uuid1",
             userName: "Ali",
             password: "123",
-            role: Role.Admin,
         },
         {
             id: "uuid2",
             userName: "Sam",
             password: "124",
-            role: Role.Customer,
         },
     ];
 
