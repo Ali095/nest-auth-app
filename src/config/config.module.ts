@@ -1,16 +1,31 @@
-import { ConfigModule } from "@nestjs/config";
-import * as secrets from "./secrets/secrets.config";
-import { validateConfigurations } from './config.validation';
+import { ConfigModule, registerAs } from "@nestjs/config";
+import { Secrets } from "./interfaces/secrets.config";
+// import { validateConfigurations } from "./config.validation";
 
+export interface SecretConfig {
+	nodeEnv: string;
+	port: number;
+	APIPrefix: string;
+	jwtSecret: string;
+	jwtExpiresIn: string;
+}
 
+export enum ConfigMapper {
+	appConfig = "configurationSecrets",
+}
 
-const secretsConfiguration = () => ({ ...secrets });
+const registerConfgurationSecrets = registerAs("configurationSecrets", (): SecretConfig => ({
+	nodeEnv: process.env.NODE_ENV,
+	port: parseInt(process.env.PORT, 10),
+	APIPrefix: "api",
+	jwtSecret: process.env.JWT_SECRET ?? "thereIsNoSecretForCreatingJWT",
+	jwtExpiresIn: process.env.JWT_EXPIRY ?? "2h",
+}));
 
 export const configurationModule = ConfigModule.forRoot({
-	isGlobal: true,
-	load: [secretsConfiguration],
-	validate: validateConfigurations,
 	cache: false,
+	isGlobal: true,
+	envFilePath: ".env",
+	load: [registerConfgurationSecrets],
+	// validate: validateConfigurations,
 });
-
-export default configurationModule;
