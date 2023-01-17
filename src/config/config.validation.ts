@@ -6,14 +6,12 @@
  * without that variable.
  */
 import * as Joi from "joi";
-import { Logger } from "@nestjs/common";
 import { validationSchema } from "./schema/secrets.schema";
-import * as secrets from "./interfaces/secrets.config";
 
 const schemaListToValidate: Joi.ObjectSchema<never>[] = [validationSchema];
 
 export function validateConfigurations(config: Record<string, never>): Record<string, never> {
-	Logger.log(secrets);
+	return config;
 	for (let index = 0; index < schemaListToValidate.length; index++) {
 		const schema: Joi.ObjectSchema<never> = schemaListToValidate[index];
 		const checkValidation: Joi.ValidationResult<never> = schema

@@ -1,32 +1,19 @@
-import { HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { AuthCredentialsDto } from "src/dataObjects/user-auth-credentials.dto";
-import { User } from "src/dataObjects/user.entity";
-import { CreateUserDto } from "src/dataObjects/users-create-new.dto";
-import { DbRepo } from "src/dataObjects/dbRepo";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserJwtPayload } from "src/dataObjects/user-jwt-payload.interface";
+import { AuthDto } from "../dto/auth.dto";
 
 @Injectable()
 export class AuthService {
-  constructor(private dbRepo: DbRepo, private jwtService: JwtService) { }
+  constructor(private jwtService: JwtService) { }
 
-  async signup(createUserDto: CreateUserDto): Promise<User> {
-    return this.dbRepo.createUser(createUserDto);
+  async signup(credentials: AuthDto): Promise<{ accessToken: string }> {
+    const accessToken: string = this.jwtService.sign(credentials);
+    return { accessToken };
   }
 
-  async signin(
-    authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ accessToken: string }> {
-    const { username } = authCredentialsDto;
-
-    const user = await this.dbRepo.userFindByNameAndMatchingPassword(
-      authCredentialsDto,
-    );
-
-    if (user) {
-      const { typeid } = user;
-      const payload: UserJwtPayload = { username, typeid };
-      const accessToken: string = this.jwtService.sign(payload);
+  async signin(credentials: AuthDto): Promise<{ accessToken: string }> {
+    if (credentials) {
+      const accessToken: string = this.jwtService.sign(credentials);
       return { accessToken };
     }
     throw new UnauthorizedException("Incorrect login credentials!");
