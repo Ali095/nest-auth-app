@@ -1,4 +1,6 @@
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn,
+} from "typeorm";
 
 export abstract class AbstractEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -7,12 +9,14 @@ export abstract class AbstractEntity {
   @CreateDateColumn({
     type: "timestamp without time zone",
     name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     type: "timestamp without time zone",
     name: "updated_at",
+    default: () => "CURRENT_TIMESTAMP",
   })
   updatedAt: Date;
 }

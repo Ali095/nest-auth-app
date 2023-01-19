@@ -1,2 +1,3 @@
 export { Secrets } from "../secrets.config";
-export { DataSourceOptions as DatabaseOptions } from "typeorm";
+export { DataSourceOptions } from "typeorm";
+export { TypeOrmModuleOptions as DatabaseOptions } from "@nestjs/typeorm";

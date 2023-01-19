@@ -1,4 +1,6 @@
 import { Module, MiddlewareConsumer, NestModule } from "@nestjs/common";
+import { APP_FILTER } from "@nestjs/core";
+import { AllExceptionsFilter } from "src/errors/general.error";
 import { DatabaseModule } from "./modules/database/database.module";
 import { ApiLogger } from "./middlewares/api-logger.middleware";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -12,6 +14,10 @@ import { configurationModule } from "./config/config.module";
         UsersModule,
         DatabaseModule,
     ],
+    providers: [{
+        provide: APP_FILTER,
+        useClass: AllExceptionsFilter,
+    }],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
 	Injectable, NestInterceptor, ExecutionContext, CallHandler,
 } from "@nestjs/common";
@@ -5,10 +6,11 @@ import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { ResponseMessageKey } from "../decorators/response.decorator";
-import { GeneralResponseMessage } from "../utils/response.constants";
+import { GeneralResponseMessage } from "../utils/util.constants";
+import { keysToSnake } from "../utils/helpers";
 
 export interface Response<T> {
-	statusCode: number;
+	status_code: number;
 	message: string;
 	data: T;
 }
@@ -28,10 +30,10 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
 		}
 
 		return next.handle().pipe(map((data) => ({
-			statusCode,
+			status_code: statusCode,
 			reqId: context.switchToHttp().getRequest().reqId,
 			message: responseMessage,
-			data,
+			data: keysToSnake(data),
 		})));
 	}
 }

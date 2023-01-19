@@ -1,11 +1,13 @@
 import { Injectable, NestMiddleware, Logger } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
+import { keysToCamel } from "../utils/helpers";
 
 @Injectable()
 export class ApiLogger implements NestMiddleware {
 	private logger = new Logger("HTTP");
 
 	use(request: Request, response: Response, next: NextFunction) {
+		request.body = keysToCamel(request.body);
 		response.on("finish", () => {
 			const { method, originalUrl, ip } = request;
 			const { statusCode, statusMessage } = response;
