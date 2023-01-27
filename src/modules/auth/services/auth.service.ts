@@ -19,7 +19,7 @@ export class AuthService {
     const newUser: InsertResult = await this.authRepository.insert({ ...authenticationData, password });
     const userId: string = newUser.identifiers[0].id;
     const accessToken: string = this.jwtService.sign({ email: authenticationData.email, userId });
-    return { accessToken, user: { email: authenticationData.email, userId } };
+    return { accessToken, user: { email: authenticationData.email, userId, role: "admin" } };
   }
 
   async signin(credentials: AuthDto): Promise<any> {
@@ -28,7 +28,7 @@ export class AuthService {
       const isValid = await compareHashWithString(user.password, credentials.password);
       if (isValid) {
         const accessToken: string = this.jwtService.sign(credentials);
-        return { accessToken, user: { email: credentials.email, userId: user.id } };
+        return { accessToken, user: { email: credentials.email, userId: user.id, role: "admin" } };
       }
     }
     throw new UnauthorizedException("Incorrect login credentials");

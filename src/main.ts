@@ -10,9 +10,12 @@ import { TransformInterceptor } from "./_interceptors/transform.interceptor";
 import { ResponseInterceptor } from "./_interceptors/response.interceptor";
 import { TimeoutInterceptor } from "./_interceptors/timeout.interceptor";
 
+const defaultOrigins: string[] = ["http://localhost:3001", "http://localhost:3000"];
+
 async function bootstrap() {
     const logger = new Logger("Bootstraping", { timestamp: true });
     const app = await NestFactory.create(AppModule, { bufferLogs: true });
+    app.enableCors({ origin: defaultOrigins, credentials: true });
     const configService = app.get(ConfigService);
 
     const appConfig = configService.get<Secrets>(ConfigMapper.appConfig);
