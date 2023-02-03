@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, InsertResult } from "typeorm";
 import { AuthDto, AuthenticationResponse } from "../dto/auth.dto";
 import { UserAuthentication } from "../auth.entity";
-import { generateHash, compareHashWithString } from "../../../utils/helpers";
+import { generateHash, compareHashWithString } from "../../../common/helpers/encryption.helper";
 
 @Injectable()
 export class AuthService {

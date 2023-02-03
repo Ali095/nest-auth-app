@@ -2,8 +2,9 @@
 
 import { NestFactory, Reflector } from "@nestjs/core";
 import { ConfigService } from "@nestjs/config";
-import { Logger, ValidationPipe } from "@nestjs/common";
-import { ConfigMapper } from "./config";
+import { Logger, ValidationPipe, VersioningType } from "@nestjs/common";
+import helmet from "helmet";
+import { ConfigMapper, SwaggerConfig } from "./config";
 import { Secrets } from "./config/interfaces";
 import { AppModule } from "./app.module";
 import { TransformInterceptor } from "./_interceptors/transform.interceptor";
@@ -15,12 +16,19 @@ const defaultOrigins: string[] = ["http://localhost:3001", "http://localhost:300
 async function bootstrap() {
     const logger = new Logger("Bootstraping", { timestamp: true });
     const app = await NestFactory.create(AppModule, { bufferLogs: true });
+
+    app.use(helmet());
     app.enableCors({ origin: defaultOrigins, credentials: true });
+    app.enableVersioning({
+        type: VersioningType.URI,
+        defaultVersion: "1",
+        prefix: "v",
+    });
+
     const configService = app.get(ConfigService);
-
     const appConfig = configService.get<Secrets>(ConfigMapper.appConfig);
-    app.setGlobalPrefix(appConfig.APIPrefix);
 
+    app.setGlobalPrefix(appConfig.APIPrefix);
     app.useGlobalInterceptors(
         new TransformInterceptor(),
         new ResponseInterceptor(new Reflector()),
@@ -37,6 +45,8 @@ async function bootstrap() {
             enableImplicitConversion: true,
         },
     }));
+
+    SwaggerConfig(app, "1");
 
     await app.listen(appConfig.port);
     logger.log(`App is running in "${appConfig.nodeEnv}" mode, and it is listening at: http://localhost:${appConfig.port}/${appConfig.APIPrefix}/`);

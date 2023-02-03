@@ -4,18 +4,10 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { HttpAdapterHost } from "@nestjs/core";
-import { PostgresErrorCode } from "../utils/util.constants";
+import { ErrorResponse } from "src/common/dtos";
+import { GeneralResponseMessage, PostgresErrorCode } from "../common/constants/response.constants";
 import { Secrets } from "../config/interfaces";
 import { ConfigMapper } from "../config";
-
-export interface ErrorResponse {
-	status_code: number,
-	timestamp: string,
-	path: string,
-	message: string,
-	errors?: unknown,
-	stack: unknown
-}
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -44,12 +36,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
 		if (exception instanceof BadRequestException) {
 			statusCode = exception.getStatus();
-			errorMessage = "Invalid request. The required validation failed for request, please revisit the parameters";
+			errorMessage = GeneralResponseMessage.INVALID_REQUEST;
 		}
 
 		if (exception.code === PostgresErrorCode.UniqueViolation) {
 			statusCode = HttpStatus.CONFLICT;
-			errorMessage = `The record already exists with same ${exception.detail?.split("=")[0]}`;
+			let voilationKey: string = exception.detail?.split("=")[0];
+			voilationKey = voilationKey?.substring(voilationKey.indexOf("(") + 1, voilationKey.indexOf(")"));
+			errorMessage = `The record already exists with same ${voilationKey}`;
 		}
 
 		const logMessage: string = `Error occured in request "${path}" with exception ${isProd ? JSON.stringify(stack) : JSON.stringify(exception, null, 2)}`;

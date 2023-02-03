@@ -3,7 +3,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { UsersService } from "../services/users.service";
-import { ResponseMessage } from "../../../decorators/response.decorator";
+import { ResponseMessage } from "../../../common/decorators/response.decorator";
 
 @Controller("users")
 @UseGuards(AuthGuard())

@@ -13,6 +13,6 @@ export const registerConfgurationSecrets = registerAs(ConfigMapper.appConfig, ()
 	nodeEnv: process.env.NODE_ENV || "dev",
 	port: parseInt(process.env.PORT, 10) || 3000,
 	APIPrefix: "api",
-	jwtSecret: process.env.JWT_SECRET ?? "thereIsNoSecretForCreatingJWT",
-	jwtExpiresIn: process.env.JWT_EXPIRY ?? "2d",
+	jwtSecret: process.env.JWT_SECRET || "thereIsNoSecretForCreatingJWT",
+	jwtExpiresIn: process.env.JWT_EXPIRY || "2d",
 }));

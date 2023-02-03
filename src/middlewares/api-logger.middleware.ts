@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware, Logger } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
-import { keysToCamel } from "../utils/helpers";
+import { keysToCamel } from "../common/helpers/case.typing.helper";
 
 @Injectable()
 export class ApiLogger implements NestMiddleware {

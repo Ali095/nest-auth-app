@@ -1,14 +1,3 @@
-import * as bcrypt from "bcrypt";
-
-export const generateSalt = async (): Promise<string> => bcrypt.genSalt(15);
-
-export const generateHash = async (str: string): Promise<string> => {
-	const salt = await generateSalt();
-	return bcrypt.hash(str, salt);
-};
-
-export const compareHashWithString = async (hash: string, str: string): Promise<boolean> => bcrypt.compare(str, hash);
-
 export const toCamelCase = (str: string): string => str.replace(/([-_][a-z])/ig, ($1) => $1.toUpperCase().replace("-", "").replace("_", ""));
 
 export const toSnakeCase = (str: string): string => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
