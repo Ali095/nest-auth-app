@@ -1,23 +1,35 @@
 import { Module, MiddlewareConsumer, NestModule } from "@nestjs/common";
-import { APP_FILTER } from "@nestjs/core";
-import { AllExceptionsFilter } from "src/errors/general.error";
-import { DatabaseModule } from "./modules/database/database.module";
-import { ApiLogger } from "./middlewares/api-logger.middleware";
+import { APP_FILTER, APP_GUARD } from "@nestjs/core";
+import { JwtAuthGuard } from "./guards";
+import { RolesModule } from "./modules/roles/roles.module";
+import { AllExceptionsFilter, ApiLogger } from "./common";
+import { DatabaseModule } from "./database/database.module";
 import { AuthModule } from "./modules/auth/auth.module";
-import { UsersModule } from "./modules/user/users.module";
+import { UsersModule } from "./modules/users/users.module";
 import { configurationModule } from "./config/config.module";
+import { PermissionsModule } from "./modules/permissions/permissions.module";
+import { ExternalAppsModule } from "./external/external.module";
 
 @Module({
     imports: [
         configurationModule,
+        DatabaseModule,
+        ExternalAppsModule,
         AuthModule,
         UsersModule,
-        DatabaseModule,
+        PermissionsModule,
+        RolesModule,
     ],
-    providers: [{
-        provide: APP_FILTER,
-        useClass: AllExceptionsFilter,
-    }],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: AllExceptionsFilter,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+    ],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {

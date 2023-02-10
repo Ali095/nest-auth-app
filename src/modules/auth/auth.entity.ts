@@ -1,11 +1,44 @@
 import { Column, Entity } from "typeorm";
-import { AbstractEntity } from "../database/abstract.entity";
+import { UserAuthStatus } from "./_types";
+import { BaseEntity } from "../../database/abstract.entity";
 
-@Entity()
-export class UserAuthentication extends AbstractEntity {
-	@Column({ unique: true })
+@Entity({ name: "users_authentication" })
+export class UserAuthenticationEntity extends BaseEntity {
+	@Column({ unique: true, nullable: false })
 	public email: string;
 
-	@Column()
+	@Column({ unique: true, nullable: false })
+	public username: string;
+
+	@Column({ nullable: false })
 	public password: string;
+
+	@Column({ nullable: false, default: false })
+	public emailVerified: boolean;
+
+	@Column({
+		type: "enum",
+		enum: UserAuthStatus,
+		nullable: false,
+		default: UserAuthStatus.Active,
+	})
+	status: UserAuthStatus;
+
+	@Column({ nullable: true })
+	public emailConfirmationToken: string;
+
+	@Column({
+		type: "timestamp without time zone",
+		nullable: true,
+	})
+	public emailTokenTime: Date;
+
+	@Column({ nullable: true })
+	public passwordRecoveryToken: string;
+
+	@Column({
+		type: "timestamp without time zone",
+		nullable: true,
+	})
+	public recoveryTokenTime: Date;
 }

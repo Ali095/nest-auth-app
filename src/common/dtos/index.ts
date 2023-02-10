@@ -1,1 +1,2 @@
-export { ApiResponse, ErrorResponse } from "./response.dto";
+export * from "./api.response.dto";
+export * from "./paginated.response.dto";

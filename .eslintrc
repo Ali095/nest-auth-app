@@ -20,6 +20,7 @@
         "airbnb-typescript/base"
     ],
     "rules": {
+        "max-classes-per-file" :"off",
         "no-unused-vars": "warn",
         "import/no-extraneous-dependencies": "off",
         "import/prefer-default-export": "off",
@@ -54,7 +55,7 @@
         "max-len": [
             "warn",
             {
-                "code": 120,
+                "code": 130,
                 "ignoreComments": true,
                 "ignoreUrls": true,
                 "ignoreStrings": true,

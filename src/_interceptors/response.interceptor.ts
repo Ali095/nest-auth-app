@@ -5,10 +5,9 @@ import {
 import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { ApiResponse } from "src/common/dtos";
-import { ResponseMessageKey } from "../common/decorators/response.decorator";
-import { GeneralResponseMessage } from "../common/constants/response.constants";
-import { keysToSnake } from "../common/helpers/case.typing.helper";
+import {
+	ApiResponse, ResponseMessageKey, GeneralResponseMessage, keysToSnake,
+} from "../common";
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>> {

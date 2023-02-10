@@ -7,6 +7,7 @@ export interface Secrets {
 	APIPrefix: string;
 	jwtSecret: string;
 	jwtExpiresIn: string;
+	refreshExpiresIn: string
 }
 
 export const registerConfgurationSecrets = registerAs(ConfigMapper.appConfig, (): Secrets => ({
@@ -14,5 +15,6 @@ export const registerConfgurationSecrets = registerAs(ConfigMapper.appConfig, ()
 	port: parseInt(process.env.PORT, 10) || 3000,
 	APIPrefix: "api",
 	jwtSecret: process.env.JWT_SECRET || "thereIsNoSecretForCreatingJWT",
-	jwtExpiresIn: process.env.JWT_EXPIRY || "2d",
+	jwtExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN || "2d",
+	refreshExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || "7d",
 }));
