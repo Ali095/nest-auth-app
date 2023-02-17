@@ -20,6 +20,7 @@ export class UsersRepository extends Repository<UserEntity> {
       skip, limit: take, order, params: { search },
     } = pagination;
     const query = this.createQueryBuilder("u")
+      .innerJoinAndSelect("u.userId", "ua")
       .innerJoinAndSelect("u.roles", "r")
       .leftJoinAndSelect("u.permissions", "p")
       .skip(skip)
@@ -28,7 +29,8 @@ export class UsersRepository extends Repository<UserEntity> {
 
     if (search) {
       query.where(
-        `u.username ILIKE :search
+        `ua.username ILIKE :search
+        OR ua.email ILIKE :search
         OR u.first_name ILIKE :search
         OR u.last_name ILIKE :search
         `,

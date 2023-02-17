@@ -12,34 +12,31 @@ export class SendgridService {
 
 	private async sendMail(mail: SendGrid.MailDataRequired): Promise<any> {
 		Logger.log(`Email successfully dispatched to ${mail.to}`, "Email Service");
-		try {
-			const res = await SendGrid.send({
-				to: "hassanali5062@gmail.com",
-				from: "hali@epik.io",
-				subject: "Sending with SendGrid is Fun",
-				text: "and easy to do anywhere, even with Node.js",
-				html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-			});
-			return res;
-		} catch (e) {
-			console.log(e);
-			throw e;
-		}
+		return SendGrid.send(mail);
 	}
 
-	public async sendMailToSingleUser(mailData: MailData, type: EmailType): Promise<any> {
-		try {
-			const res = await SendGrid.send({
-				to: "hassanali5062@gmail.com",
-				from: "hali@epik.io",
-				subject: "Sending with SendGrid is Fun",
-				text: "and easy to do anywhere, even with Node.js",
-				html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-			});
-			return res;
-		} catch (e) {
-			console.log(e);
-			throw e;
+	public async sendMailToSingleUser(mailData: MailData, type: EmailType, data: any): Promise<any> {
+		switch (type) {
+			case EmailType.EMAIL_VERIFICATION:
+				return this.sendMail({
+					to: mailData.to,
+					cc: mailData.cc,
+					bcc: mailData.bcc,
+					from: { email: "hali@epik.io", name: "Zinlab" },
+					subject: "Please Verify Your Email",
+					html: `<p>Please use following code to verify your email address</p></br><h1>${data}</h1>`,
+				});
+			case EmailType.PASSWORD_RECOVERY:
+				return this.sendMail({
+					to: mailData.to,
+					cc: mailData.cc,
+					bcc: mailData.bcc,
+					from: { email: "hali@epik.io", name: "Zinlab" },
+					subject: "Request to Recover Password",
+					html: `<p>Please use following code to verify your email address</p></br><h1>${data}</h1>`,
+				});
+			default:
+				throw new NotImplementedException(`Template for ${type} type of emial is not configured in code base. Please implement those first`);
 		}
 	}
 }

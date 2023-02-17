@@ -13,4 +13,13 @@ export class AuthMapper {
 		entity.status = UserAuthStatus.Active;
 		return entity;
 	}
+
+	public static toUpdateEntity(entity: UserAuthenticationEntity, dto: Partial<SignupCredentialsDto>): UserAuthenticationEntity {
+		const updatedEntity = new UserAuthenticationEntity(entity);
+
+		Object.keys(dto).forEach((key) => {
+			if (dto[key] !== undefined) { updatedEntity[key] = dto[key]; }
+		});
+		return updatedEntity;
+	}
 }

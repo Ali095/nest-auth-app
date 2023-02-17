@@ -8,9 +8,9 @@ export abstract class AbstractDTO {
 	@ApiProperty({ type: "number", example: 1 })
 	id?: number;
 
-	@ApiProperty({ name: "created_at" })
-	createdAt?: Date;
+	@ApiProperty({ name: "created_at", example: new Date().toISOString() })
+	createdAt?: string;
 
-	@ApiProperty({ name: "updated_at" })
-	updatedAt?: Date;
+	@ApiProperty({ name: "updated_at", example: new Date().toISOString() })
+	updatedAt?: string;
 }

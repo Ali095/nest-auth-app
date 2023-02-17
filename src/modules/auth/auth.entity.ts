@@ -41,4 +41,10 @@ export class UserAuthenticationEntity extends BaseEntity {
 		nullable: true,
 	})
 	public recoveryTokenTime: Date;
+
+	@Column({
+		type: "timestamp without time zone",
+		nullable: true,
+	})
+	public lastLoggedIn: Date;
 }

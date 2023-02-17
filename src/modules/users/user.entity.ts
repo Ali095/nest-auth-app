@@ -19,7 +19,7 @@ export class UserEntity extends BaseEntityWithoutId {
 	@OneToOne(() => UserAuthenticationEntity, (auth) => auth.id, { lazy: true, cascade: true })
 	@JoinColumn({ name: "user_id", referencedColumnName: "id" })
 	@Column({ unique: true, nullable: false })
-	public userId: number;
+	public userId: UserAuthenticationEntity;
 
 	@Column({ nullable: true })
 	public firstName: string;

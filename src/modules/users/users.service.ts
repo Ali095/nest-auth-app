@@ -32,7 +32,7 @@ export class UsersService {
    * @returns {Promise<UserResponseDto>}
    */
   public async getUserById(id: number): Promise<UserResponseDto> {
-    const userEntity = await this.usersRepository.findOne({ where: { id }, relations: ["permissions", "roles"] });
+    const userEntity = await this.usersRepository.findOne({ where: { id }, relations: ["permissions", "roles", "userId"] });
     if (!userEntity) {
       throw new NotFoundException();
     }
