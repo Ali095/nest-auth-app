@@ -22,7 +22,7 @@ export class PaginateOptionsDto {
 
 export class PaginationResponseDto<T> {
   @ApiProperty()
-  data: T[];
+  payload: T[];
 
   @ApiProperty()
   paginateOptions: PaginateOptionsDto;

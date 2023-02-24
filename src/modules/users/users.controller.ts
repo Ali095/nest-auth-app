@@ -4,6 +4,7 @@ import {
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { TOKEN_NAME } from "src/config";
 import {
+  ApiDocument,
   PaginationParams, PaginationRequest, PaginationResponseDto,
 } from "../../common";
 import { CreateUserRequestDto, UpdateUserRequestDto, UserResponseDto } from "./_types";
@@ -18,6 +19,13 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private usersService: UsersService) { }
 
+  @ApiDocument({
+    requestDescription: "Fetch the list of all users",
+    responseDescription: "Fetched the paginated users list with their details",
+    returnDataDto: UserResponseDto,
+    pagination: true,
+    successStatusCode: 200,
+  })
   @ApiQuery({
     name: "search", type: "string", required: false, example: "admin",
   })

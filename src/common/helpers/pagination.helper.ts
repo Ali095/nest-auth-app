@@ -15,7 +15,7 @@ export class Pagination {
     const hasNext = currentPage <= totalPages - 1;
 
     return {
-      data: dtos,
+      payload: dtos,
       paginateOptions: {
         totalPages,
         payloadSize: dtos.length,
