@@ -16,6 +16,9 @@ export class RoleResponseDto extends AbstractDTO {
 
 	@ApiProperty()
 	active: boolean;
+
+	@ApiProperty()
+	userCount: number;
 }
 
 export class RoleDto {

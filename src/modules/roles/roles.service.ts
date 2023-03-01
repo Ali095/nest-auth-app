@@ -1,6 +1,9 @@
 import { NotFoundException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Pagination, PaginationRequest, PaginationResponseDto } from "../../common";
+import { UsersService } from "src/modules/users/users.service";
+import {
+  Pagination, PaginationFilters, PaginationRequest, PaginationResponseDto,
+} from "../../common";
 import {
   CreateRoleRequestDto, UpdateRoleRequestDto, RoleResponseDto, RoleMapper,
 } from "./_types";
@@ -11,6 +14,7 @@ export class RolesService {
   constructor(
     @InjectRepository(RolesRepository)
     private rolesRepository: RolesRepository,
+    private usersService: UsersService,
   ) { }
 
   /**
@@ -18,10 +22,20 @@ export class RolesService {
    * @param pagination {PaginationRequest}
    * @returns {Promise<PaginationResponseDto<RoleResponseDto>>}
    */
-  public async getRoles(pagination: PaginationRequest): Promise<PaginationResponseDto<RoleResponseDto>> {
+  public async getRoles(pagination: PaginationRequest<PaginationFilters>): Promise<PaginationResponseDto<RoleResponseDto>> {
     const [roleEntities, totalRoles] = await this.rolesRepository.getRolesAndCount(pagination);
 
-    const roleDtos = await Promise.all(roleEntities.map(RoleMapper.toDtoWithRelations));
+    const userCountPromise: Promise<number>[] = [];
+
+    let roleDtos = await Promise.all(roleEntities.map((e) => {
+      userCountPromise.push(this.usersService.countUsersByRole(e.id));
+      return RoleMapper.toDtoWithRelations(e);
+    }));
+
+    const usersCountByRoles = await Promise.all(userCountPromise);
+
+    roleDtos = roleDtos.map((r, i) => ({ ...r, userCount: usersCountByRoles[i] }));
+
     return Pagination.of(pagination, totalRoles, roleDtos);
   }
 

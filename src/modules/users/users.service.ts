@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Pagination, PaginationRequest, PaginationResponseDto } from "../../common";
 import {
   UserMapper,
-  CreateUserRequestDto, UpdateUserRequestDto, UserResponseDto,
+  CreateUserRequestDto, UpdateUserRequestDto, UserResponseDto, UserFilterParams,
 } from "./_types";
 import { UsersRepository } from "./users.repository";
 
@@ -19,7 +19,8 @@ export class UsersService {
    * @param pagination {PaginationRequest}
    * @returns {Promise<PaginationResponseDto<UserResponseDto>>}
    */
-  public async getUsers(pagination: PaginationRequest): Promise<PaginationResponseDto<UserResponseDto>> {
+  public async getUsers(pagination: PaginationRequest<UserFilterParams>)
+    : Promise<PaginationResponseDto<UserResponseDto>> {
     const [userEntities, totalUsers] = await this.usersRepository.getUsersAndCount(pagination);
 
     const UserDtos = await Promise.all(userEntities.map(UserMapper.toDtoWithRelations));
@@ -67,5 +68,9 @@ export class UsersService {
     userEntity = UserMapper.toUpdateEntity(userEntity, userDto);
     userEntity = await this.usersRepository.save(userEntity);
     return UserMapper.toDtoWithRelations(userEntity);
+  }
+
+  public async countUsersByRole(roleId): Promise<number> {
+    return this.usersRepository.countBy({ roles: { id: roleId } });
   }
 }

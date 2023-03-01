@@ -3,7 +3,9 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TimeoutError } from "rxjs";
-import { Pagination, PaginationResponseDto, PaginationRequest } from "../../common";
+import {
+	Pagination, PaginationResponseDto, PaginationRequest, PaginationFilters,
+} from "../../common";
 import {
 	PermissionMapper, CreatePermissionRequestDto, UpdatePermissionRequestDto, PermissionResponseDto,
 } from "./_types";
@@ -21,7 +23,8 @@ export class PermissionsService {
 	 * @param pagination {PaginationRequest}
 	 * @returns {Promise<PaginationResponseDto<PermissionResponseDto>>}
 	 */
-	public async getPermissions(pagination: PaginationRequest): Promise<PaginationResponseDto<PermissionResponseDto>> {
+	public async getPermissions(pagination: PaginationRequest<PaginationFilters>)
+		: Promise<PaginationResponseDto<PermissionResponseDto>> {
 		try {
 			const [permissionEntities, totalPermissions] = await this.permissionsRepository.getPermissionsAndCount(
 				pagination,

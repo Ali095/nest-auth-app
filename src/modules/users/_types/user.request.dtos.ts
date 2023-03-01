@@ -2,6 +2,7 @@ import {
 	IsArray, IsNotEmpty, IsOptional, IsNumber, MaxLength,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { PaginationFilters } from "src/common/interfaces";
 
 export class CreateUserRequestDto {
 	@IsOptional()
@@ -69,4 +70,8 @@ export class UpdateUserRequestDto {
 	@IsOptional()
 	@IsNumber({ allowNaN: false, allowInfinity: false }, { each: true })
 	roles: number[];
+}
+
+export interface UserFilterParams extends PaginationFilters {
+	roleId: number;
 }
