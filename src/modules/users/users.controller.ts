@@ -51,10 +51,7 @@ export class UsersController {
   // }
 
   @Put("/:id")
-  public updateUser(
-    @Param("id", ParseIntPipe) id: number,
-    @Body(ValidationPipe) UserDto: UpdateUserRequestDto,
-  ): Promise<UserResponseDto> {
+  public updateUser(@Param("id", ParseIntPipe) id: number, @Body(ValidationPipe) UserDto: UpdateUserRequestDto): Promise<UserResponseDto> {
     return this.usersService.updateUser(id, UserDto);
   }
 

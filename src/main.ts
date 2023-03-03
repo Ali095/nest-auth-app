@@ -11,7 +11,7 @@ import { TransformInterceptor } from "./_interceptors/transform.interceptor";
 import { ResponseInterceptor } from "./_interceptors/response.interceptor";
 import { TimeoutInterceptor } from "./_interceptors/timeout.interceptor";
 
-const defaultOrigins: string[] = ["http://localhost:3001", "http://localhost:3000"];
+const defaultOrigins: string[] = ["http://localhost:3001", "http://localhost:3000", "http://192.168.18.239:3000"];
 
 async function bootstrap() {
     const logger = new Logger("Bootstraping", { timestamp: true });
@@ -48,7 +48,7 @@ async function bootstrap() {
 
     SwaggerConfig(app, "1");
 
-    await app.listen(appConfig.port);
+    await app.listen(appConfig.port, "0.0.0.0");
     logger.log(`App is running in "${appConfig.nodeEnv}" mode, and it is listening at: http://localhost:${appConfig.port}/${appConfig.APIPrefix}/`);
 }
 bootstrap();
