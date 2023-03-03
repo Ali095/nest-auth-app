@@ -4,7 +4,7 @@ import {
 import { TOKEN_NAME } from "src/config";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import {
-  ApiDocument, PaginationParams, PaginationRequest, PaginationResponseDto,
+  ApiDocument, PaginationFilters, PaginationParams, PaginationRequest, PaginationResponseDto,
 } from "../../common";
 import { UpdateRoleRequestDto, CreateRoleRequestDto, RoleResponseDto } from "./_types";
 import { RolesService } from "./roles.service";
@@ -29,7 +29,8 @@ export class RolesController {
     name: "search", type: "string", required: false, example: "admin",
   })
   @Get()
-  public getRoles(@PaginationParams() pagination: PaginationRequest): Promise<PaginationResponseDto<RoleResponseDto>> {
+  public getRoles(@PaginationParams() pagination: PaginationRequest<PaginationFilters>)
+    : Promise<PaginationResponseDto<RoleResponseDto>> {
     return this.rolesService.getRoles(pagination);
   }
 

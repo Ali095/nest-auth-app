@@ -21,7 +21,6 @@ export class RoleMapper {
 	}
 
 	public static async toDtoWithRelations(entity: RoleEntity): Promise<RoleResponseDto> {
-		console.log(entity);
 		const dto = new RoleResponseDto();
 		dto.id = entity.id;
 		dto.name = entity.name;

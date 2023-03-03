@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
-import { PaginationRequest } from "../../common";
+import { PaginationFilters, PaginationRequest } from "../../common";
 import { PermissionEntity } from "./permission.entity";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class PermissionsRepository extends Repository<PermissionEntity> {
    * @param pagination {PaginationRequest}
    * @returns permissionEntities[] and totalPermissions
    */
-  public async getPermissionsAndCount(pagination: PaginationRequest):
+  public async getPermissionsAndCount(pagination: PaginationRequest<PaginationFilters>):
     Promise<[permissionEntities: PermissionEntity[], totalPermissions: number]> {
     const {
       skip, limit: take, order, params: { search },

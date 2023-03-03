@@ -1,5 +1,5 @@
 import {
-	ArrayNotEmpty, IsArray, IsBoolean, IsNotEmpty, IsNumber, MaxLength,
+	ArrayNotEmpty, IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, MaxLength,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -18,7 +18,7 @@ export class CreateRoleRequestDto {
 
 export class UpdateRoleRequestDto extends CreateRoleRequestDto {
 	@ApiProperty()
-	@IsNotEmpty()
+	@IsOptional()
 	@IsBoolean()
-	active: boolean;
+	active?: boolean;
 }

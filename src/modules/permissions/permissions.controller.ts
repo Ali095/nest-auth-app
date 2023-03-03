@@ -5,7 +5,7 @@ import {
 	ApiBearerAuth, ApiQuery, ApiTags,
 } from "@nestjs/swagger";
 import { TOKEN_NAME } from "src/config";
-import { ApiDocument } from "src/common";
+import { ApiDocument, PaginationFilters } from "src/common";
 import { PaginationParams, PaginationRequest, PaginationResponseDto } from "../../common";
 import { PermissionsService } from "./permissions.service";
 import { CreatePermissionRequestDto, UpdatePermissionRequestDto, PermissionResponseDto } from "./_types";
@@ -31,7 +31,7 @@ export class PermissionsController {
 		name: "search", type: "string", required: false, example: "user",
 	})
 	@Get()
-	public getPermissions(@PaginationParams() pagination: PaginationRequest):
+	public getPermissions(@PaginationParams() pagination: PaginationRequest<PaginationFilters>):
 		Promise<PaginationResponseDto<PermissionResponseDto>> {
 		return this.permissionsService.getPermissions(pagination);
 	}

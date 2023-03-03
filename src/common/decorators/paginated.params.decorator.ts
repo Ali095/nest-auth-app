@@ -1,4 +1,5 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { keysToCamel } from "src/common/helpers";
 
 const data = {
   defaultSkip: 0,
@@ -46,6 +47,6 @@ export const PaginationParams = createParamDecorator((requestData: any, ctx: Exe
     page,
     limit,
     order,
-    params,
+    params: keysToCamel(params),
   });
 });
